@@ -17,6 +17,19 @@ module.exports = {
     }
   },
 
+  placeOrder: async (req, res) => {
+    try {
+      const body = req.body
+      const user = await OrderService.placeOrder(req, body , res)
+      responses(res, user)
+    } catch (error) {
+      responses(res, {
+        httpCode: httpCode.INTERNAL_SERVER_ERROR,
+        errors: [{ message: error.message }]
+      })
+    }
+  },
+
   updateOrders: async (req, res) => {
     try {
       const body = req.body

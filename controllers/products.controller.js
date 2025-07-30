@@ -48,7 +48,7 @@ module.exports = {
     try {
       const body = req.body
       console.log("req in the controller", body)
-      const user = await ProcuctService.addToCard(req, body , res)
+      const user = await ProcuctService.addToCart(req, body , res)
       responses(res, user)
     } catch (error) {
       responses(res, {
