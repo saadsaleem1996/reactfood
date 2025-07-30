@@ -1,0 +1,22 @@
+{
+  "name": "testreactfood",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "NODE_ENV=dev nodemon  --trace-warnings --delay 50ms --inspect --max-old-space-size=8192 server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "console-log-colors": "^0.5.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonapi-serializer": "^3.6.9",
+    "mongoose": "^8.16.0",
+    "nodemon": "^3.1.10"
+  }
+}
