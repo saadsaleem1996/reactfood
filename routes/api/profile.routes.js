@@ -7,11 +7,11 @@ const PasswordValidator = require('../../validator/resetPassword.validator')
 
 router.get('/',TokenValidator, Controller.getProfile)
 
-router.put('/update',TokenValidator, Controller.updateProfile)
+router.put('/',TokenValidator, Controller.updateProfile)
 
-router.delete('/delete',TokenValidator, Controller.deleteProfile)
+router.delete('/',TokenValidator, Controller.deleteProfile)
 
-router.post('/changePassword', TokenValidator, PasswordValidator.body, Controller.changePassword)
+router.post('/', TokenValidator, PasswordValidator.body, Controller.changePassword)
 
 
 module.exports = router

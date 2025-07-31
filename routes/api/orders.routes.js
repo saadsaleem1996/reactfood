@@ -1,12 +1,17 @@
-'use strict'
-const router = require('express').Router()
-const Controller = require('../../controllers/orders.controller')
+"use strict";
+const router = require("express").Router();
+const Controller = require("../../controllers/orders.controller");
+const TokenValidator = require("../../middleWares/auth");
+const productValidator = require("../../validator/product.validator");
 
+router.post(
+  "/",
+  productValidator.validateProductId,
+  productValidator.validate,
+  TokenValidator,
+  Controller.createOrders
+);
+router.put("/", TokenValidator, Controller.updateOrders);
+router.delete("/", TokenValidator, Controller.placeOrder);
 
-router.post('/',  Controller.createOrders)
-router.put('/',  Controller.updateOrders)
-router.delete('/',Controller.placeOrder)
-
- 
-
-module.exports = router
+module.exports = router;

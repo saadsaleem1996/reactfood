@@ -18,7 +18,7 @@ module.exports = {
                     ...ErrorSerializer.error(
                         httpCode.BAD_REQUEST,
                         req.originalUrl,
-                        req.t("Email is already Registered")
+                        "Email already Registered"
                     ),
                 };
             }

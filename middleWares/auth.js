@@ -17,8 +17,7 @@ module.exports = (req, res, next) => {
         ...ErrorSerializer.error(
           httpCode.UNAUTHORIZED,
           req.originalUrl,
-          req.t('No_Access_Token'),
-          req.t('No_Access_TokenDetails')
+          "No Access Token"
         )
       })
     } else {
@@ -29,8 +28,7 @@ module.exports = (req, res, next) => {
             ...ErrorSerializer.error(
               httpCode.UNAUTHORIZED,
               req.originalUrl,
-              req.t('Invalid_Access_Token'),
-              req.t('Token Expired')
+              "Invalid Access Token"
             )
           })
           res.end()
@@ -44,8 +42,7 @@ module.exports = (req, res, next) => {
               ...ErrorSerializer.error(
                 httpCode.UNAUTHORIZED,
                 req.originalUrl,
-                req.t('Invalid_Access_Token'),
-                req.t('Token Expired')
+                "Invalid Access Token"
               )
             })
             res.end()

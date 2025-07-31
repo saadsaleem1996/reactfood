@@ -1,6 +1,5 @@
 'use strict'
 const mongoose = require('mongoose')
-const { type } = require('superagent/lib/utils')
 const Schema = mongoose.Schema
 
 const userSchema = new Schema(

@@ -5,12 +5,11 @@ const httpCode = require("../utils/httpCodes");
 const ProductSerializer = require("../serializer/product.serializer");
 const CartSerializer = require("../serializer/cart.serializer");
 const cart = require("../models/cart");
-
+const ErrorSerializer = require("../serializer/error.serializer");
 
 module.exports = {
   createProduct: async (req, data, res) => {
     try {
-      console.log("data in the service", data);
       const product = await ProductModel.create({
         name: data.name,
         price: data.price,
@@ -73,7 +72,6 @@ module.exports = {
       return {
         httpCode: httpCode.OK,
         data: {
-         
           message: "Product deleted successfully",
           // product,
         },
@@ -119,12 +117,12 @@ module.exports = {
         await cart.save();
       }
 
-      console.log("cart is ---> ", cart)
+      console.log("cart is ---> ", cart);
 
       return {
         httpCode: httpCode.OK,
         data: {
-           ...CartSerializer.serialize(cart),
+          ...CartSerializer.serialize(cart),
           message: "Product added to cart successfully",
         },
       };

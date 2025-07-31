@@ -18,7 +18,7 @@ module.exports = {
                     ...ErrorSerializer.error(
                         httpCode.BAD_REQUEST,
                         req.originalUrl,
-                        req.t("Email not found")
+                        "Email not found"
                     ),
                 };
             }
@@ -27,10 +27,8 @@ module.exports = {
                 email: data?.email,
             });
             const response = await BcryptHelper.compare(data.password, user[0].password)
-            console.log("user passsword ", response)
 
             if (!response) {
-                console.log('incorrect password')
                 return {
                     httpCode: httpCode.INTERNAL_SERVER_ERROR,
                     errors: [{ message: 'Incorrect Password' }],
@@ -38,8 +36,6 @@ module.exports = {
             }
             const authToken = await JwtService.authToken(user[0]);
             await RedisService.create(user[0]?._id.toString(), authToken);
-
-            console.log('user', user)
 
             return {
                 httpCode: httpCode.OK,
