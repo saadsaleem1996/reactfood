@@ -10,10 +10,21 @@ const ErrorSerializer = require("../serializer/error.serializer");
 module.exports = {
   createProduct: async (req, data, res) => {
     try {
+
+      if (!req.file) {
+        return res.status(400).json({ message: "No file uploaded" });
+      }
+
+      console.log("req",req)
+
+      console.log(req.file , 'req.file') 
+      console.log("data in the file ", data)     
+
       const product = await ProductModel.create({
         name: data.name,
         price: data.price,
         description: data.description,
+        imageUrl: req.file.path
       });
 
       console.log("product is ---->", product);
@@ -83,10 +94,9 @@ module.exports = {
       };
     }
   },
-   getAllProduct: async (req, data, res) => {
+  getAllProduct: async (req, data, res) => {
     try {
-      const allProduct = await ProductModel.find({
-      });
+      const allProduct = await ProductModel.find({});
 
       console.log("product is ---->", allProduct);
 

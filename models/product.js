@@ -12,6 +12,10 @@ const prductSchema = new Schema(
             type: String,
             required: false
         },
+        imageUrl: {
+            type: String,
+            required: false
+        },
         description: {
             type: String,
             required: false

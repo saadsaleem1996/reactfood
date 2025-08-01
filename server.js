@@ -12,6 +12,7 @@ const allRoutes = require('./routes/api/router.js');
 
 app.use(cors('*'));
 app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // app.use('/public', express.static(path.join(__dirname, 'public')));
 
 // // API routes

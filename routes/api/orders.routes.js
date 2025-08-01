@@ -6,8 +6,6 @@ const productValidator = require("../../validator/product.validator");
 
 router.post(
   "/",
-  productValidator.validateProductId,
-  productValidator.validate,
   TokenValidator,
   Controller.createOrders
 );
