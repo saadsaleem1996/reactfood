@@ -11,6 +11,11 @@ router.post(
   TokenValidator,
   Controller.createProducts
 );
+router.get(
+  "/",
+  TokenValidator,
+  Controller.getAllProducts
+);
 router.post(
   "/addCart",
   productValidator.validateCart,

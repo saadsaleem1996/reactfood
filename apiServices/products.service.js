@@ -83,6 +83,28 @@ module.exports = {
       };
     }
   },
+   getAllProduct: async (req, data, res) => {
+    try {
+      const allProduct = await ProductModel.find({
+      });
+
+      console.log("product is ---->", allProduct);
+
+      return {
+        httpCode: httpCode.OK,
+        data: {
+          // message: "Product deleted successfully",
+          ...ProductSerializer.serialize(allProduct),
+          // allProduct,
+        },
+      };
+    } catch (error) {
+      return {
+        httpCode: httpCode.INTERNAL_SERVER_ERROR,
+        errors: [{ message: error.message }],
+      };
+    }
+  },
 
   addToCart: async (req, data, res) => {
     try {

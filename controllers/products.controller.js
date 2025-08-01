@@ -43,6 +43,19 @@ module.exports = {
       })
     }
   },
+  getAllProducts: async (req, res) => {
+    try {
+      const body = req.body
+      console.log("req in the controller", body)
+      const user = await ProcuctService.getAllProduct(req, body , res)
+      responses(res, user)
+    } catch (error) {
+      responses(res, {
+        httpCode: httpCode.INTERNAL_SERVER_ERROR,
+        errors: [{ message: error.message }]
+      })
+    }
+  },
 
   addTocard: async (req, res) => {
     try {
