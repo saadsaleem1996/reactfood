@@ -24,6 +24,7 @@ module.exports = {
         name: data.name,
         price: data.price,
         description: data.description,
+        categoryId: data.categoryId,
         imageUrl: req.file.path
       });
 

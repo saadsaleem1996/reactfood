@@ -16,6 +16,11 @@ const prductSchema = new Schema(
             type: String,
             required: false
         },
+       categoryId: {
+           type: mongoose.Schema.Types.ObjectId,
+           ref: 'categories',
+           required: true
+         },
         description: {
             type: String,
             required: false

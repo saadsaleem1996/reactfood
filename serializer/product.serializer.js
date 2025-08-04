@@ -5,6 +5,7 @@ module.exports = new JSONAPISerializer('products', {
     'name',
     'description',
     'price',
+    'categoryId',
     'createdAt',
     'comments'
   ],
