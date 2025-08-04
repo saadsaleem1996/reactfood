@@ -5,6 +5,7 @@ const RegistrationRoute = require('./registration.routes')
 const LoginRoute = require('./login.routes')
 const LogoutRoute = require('./logout.routes')
 const ProfileRoutes = require('./profile.routes')
+const CategoryRoutes = require('./category.routes')
 
 router.use('/products', ProductRoute)
 router.use('/orders', OrderRoute)
@@ -12,5 +13,6 @@ router.use('/register', RegistrationRoute)
 router.use('/login', LoginRoute)
 router.use('/logout', LogoutRoute)
 router.use('/profile', ProfileRoutes)
+router.use('/category', CategoryRoutes)
 
 module.exports = router
