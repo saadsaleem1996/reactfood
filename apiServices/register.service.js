@@ -25,10 +25,19 @@ module.exports = {
         };
       }
       data.password = await BcryptHelper.generate(data?.password);
-      const userRole = await RoleMode.findById(data.userRole).select(
-        "role_name"
-      );
-      console.log("user role is ----> ", userRole);
+      const userRole = await RoleMode.findOne({
+        role_name: data.userRole,
+      }).select("role_name");
+      if (!userRole) {
+        return {
+          httpCode: httpCode.BAD_REQUEST,
+          ...ErrorSerializer.error(
+            httpCode.BAD_REQUEST,
+            req.originalUrl,
+            "Role not found"
+          ),
+        };
+      }
       const user = await UserModel.create({
         firstName: data?.firstName,
         lastName: data?.lastName,
@@ -38,18 +47,17 @@ module.exports = {
       });
       const authToken = await JwtService.authToken(user);
       await RedisService.create(user?._id.toString(), authToken);
-        const createRole = await UserRoleModel.create({
-            userId: user._id,
-            roleId: userRole._id
+      const createRole = await UserRoleModel.create({
+        userId: user._id,
+        roleId: userRole._id,
       });
-      console.log("user role system --- ", createRole)
       return {
         httpCode: httpCode.CREATED,
         data: {
           authToken,
           ...RegistrationSerializer.serialize({
             ...data,
-            userRole:userRole.role_name
+            userRole: userRole.role_name,
           }),
         },
       };

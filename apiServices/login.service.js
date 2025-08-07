@@ -29,19 +29,16 @@ module.exports = {
                 email: data?.email,
             });
 
-            console.log("ids are ----> ", user[0]._id, user[0].userRole._id)
 
             const userRole = await UserRoleModel.findOne({
                 userId: user[0]._id,
-                roleId: user[0].userRole._id
+                roleId: user[0].userRole
             }).select("roleId");
-            console.log("user role is ids ----", userRole.roleId)
-
+            
             const findRole = await RoleModel.findById({
                 _id: userRole.roleId
             }).select("role_name")
-            console.log("user role id is ----> ", findRole)
-
+            
             const response = await BcryptHelper.compare(data.password, user[0].password)
 
             if (!response) {
@@ -63,7 +60,6 @@ module.exports = {
                         userRole: findRole.role_name,
                         authToken: authToken
                     }),
-                    // findRole.role_name
                 },
             };
         } catch (error) {
