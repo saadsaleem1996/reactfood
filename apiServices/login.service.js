@@ -6,6 +6,8 @@ const LoginSerializer = require("../serializer/login.serializer");
 const BcryptHelper = require("../utils/bcrypt.helper")
 const JwtService = require("../services/jwtToken")
 const RedisService = require("../services/redisService");
+const UserRoleModel = require("../models/user-roles")
+const RoleModel = require("../models/roles")
 
 module.exports = {
     login: async (req, data, res) => {
@@ -26,6 +28,20 @@ module.exports = {
             const user = await UserModel.find({
                 email: data?.email,
             });
+
+            console.log("ids are ----> ", user[0]._id, user[0].userRole._id)
+
+            const userRole = await UserRoleModel.findOne({
+                userId: user[0]._id,
+                roleId: user[0].userRole._id
+            }).select("roleId");
+            console.log("user role is ids ----", userRole.roleId)
+
+            const findRole = await RoleModel.findById({
+                _id: userRole.roleId
+            }).select("role_name")
+            console.log("user role id is ----> ", findRole)
+
             const response = await BcryptHelper.compare(data.password, user[0].password)
 
             if (!response) {
@@ -40,8 +56,14 @@ module.exports = {
             return {
                 httpCode: httpCode.OK,
                 data: {
-                    authToken,
-                    ...LoginSerializer.serialize(user[0]),
+                    ...LoginSerializer.serialize({
+                        firstName: user[0].firstName,
+                        lastName: user[0].lastName,
+                        email: user[0].email,
+                        userRole: findRole.role_name,
+                        authToken: authToken
+                    }),
+                    // findRole.role_name
                 },
             };
         } catch (error) {

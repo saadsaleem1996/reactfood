@@ -1,38 +1,39 @@
-'use strict'
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
+"use strict";
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
   {
     firstName: {
       type: String,
-      required: false
+      required: false,
     },
     lastName: {
       type: String,
-      required: false
+      required: false,
     },
     email: {
       type: String,
       unique: false,
-      required: false
+      required: false,
     },
     password: {
       type: String,
-      required: false
+      required: false,
     },
     passwordChangedRequest: {
       type: Boolean,
       default: false,
-      required: true
+      required: true,
     },
     profileImage: {
       type: String,
-      required: false
+      required: false,
     },
     userRole: {
-      type: String,
-      required: false
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Roles",
+      required: false,
     },
     socialAccounts: [
       {
@@ -42,44 +43,44 @@ const userSchema = new Schema(
     ],
     isDeleted: {
       type: Boolean,
-      default: false
+      default: false,
     },
     verified: {
       type: Boolean,
-      default: false
+      default: false,
     },
     notificationEnabale: {
       type: Boolean,
       default: true,
-      required: true
+      required: true,
     },
     emailEnabale: {
       type: Boolean,
       default: true,
-      required: true
+      required: true,
     },
     authToken: {
       type: String,
-      default: ''
+      default: "",
     },
     authCode: {
       type: String,
-      default: ''
+      default: "",
     },
     codeCreatedAt: {
-      type: Date
+      type: Date,
     },
     createdAt: {
-      type: Date
+      type: Date,
     },
     updatedAt: {
-      type: Date
-    }
+      type: Date,
+    },
   },
   { timestamps: true, toJSON: { getters: true, virtuals: true } },
   { versionKey: false }
-)
+);
 
-userSchema.index({ fullName: 1, email: 1, type: -1 })
+userSchema.index({ fullName: 1, email: 1, type: -1 });
 
-module.exports = mongoose.models.User || mongoose.model('User', userSchema)
+module.exports = mongoose.models.User || mongoose.model("User", userSchema);

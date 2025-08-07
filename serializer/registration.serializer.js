@@ -6,6 +6,7 @@ module.exports = new JSONAPISerializer('user', {
     'lastName',
     'email',
     'profileImage',
+    'userRole',
     '_id',
     'isDeleted',
     'verified',

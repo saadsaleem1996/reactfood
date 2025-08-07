@@ -2,18 +2,19 @@
 const RolesModel = require("../models/roles");
 const httpCode = require("../utils/httpCodes");
 const ErrorSerializer = require("../serializer/error.serializer");
+const RoleSerializer = require("../serializer/role.serializer")
 
 module.exports = {
   createRoles: async (req, data, res) => {
     try {
       const role = await RolesModel.create({
-        name: data.name,
+        role_name: data.name,
       });
 
       return {
         httpCode: httpCode.OK,
         data: {
-          role,
+            ...RoleSerializer.serialize(role),
           message: "Role Created successfully",
         },
       };
@@ -67,12 +68,13 @@ module.exports = {
   },
   getAllRoles: async (req, data, res) => {
     try {
-      const allRoles = await CategoryModel.find({});
+      const allRoles = await RolesModel.find({});
 
       return {
         httpCode: httpCode.OK,
         data: {
-          allRoles,
+            ...RoleSerializer.serialize(allRoles),
+          
         },
       };
     } catch (error) {
