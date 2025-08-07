@@ -7,9 +7,8 @@ module.exports = {
   createProducts: async (req, res) => {
     try {
       const body = req.body
-      console.log("req in the controllwe", body)
-      const user = await ProcuctService.createProduct(req, body , res)
-      responses(res, user)
+      const product = await ProcuctService.createProduct(req, body , res)
+      responses(res, product)
     } catch (error) {
       responses(res, {
         httpCode: httpCode.INTERNAL_SERVER_ERROR,
@@ -20,9 +19,8 @@ module.exports = {
   updateProduct: async (req, res) => {
     try {
       const body = req.body
-      console.log("req in the controller", body)
-      const user = await ProcuctService.updateProduct(req, body , res)
-      responses(res, user)
+      const product = await ProcuctService.updateProduct(req, body , res)
+      responses(res, product)
     } catch (error) {
       responses(res, {
         httpCode: httpCode.INTERNAL_SERVER_ERROR,
@@ -33,9 +31,8 @@ module.exports = {
   deleteProduct: async (req, res) => {
     try {
       const body = req.body
-      console.log("req in the controller", body)
-      const user = await ProcuctService.deleteProduct(req, body , res)
-      responses(res, user)
+      const product = await ProcuctService.deleteProduct(req, body , res)
+      responses(res, product)
     } catch (error) {
       responses(res, {
         httpCode: httpCode.INTERNAL_SERVER_ERROR,
@@ -46,9 +43,8 @@ module.exports = {
   getAllProducts: async (req, res) => {
     try {
       const body = req.body
-      console.log("req in the controller", body)
-      const user = await ProcuctService.getAllProduct(req, body , res)
-      responses(res, user)
+      const product = await ProcuctService.getAllProduct(req, body , res)
+      responses(res, useproductr)
     } catch (error) {
       responses(res, {
         httpCode: httpCode.INTERNAL_SERVER_ERROR,
@@ -60,9 +56,8 @@ module.exports = {
   addTocard: async (req, res) => {
     try {
       const body = req.body
-      console.log("req in the controller", body)
-      const user = await ProcuctService.addToCart(req, body , res)
-      responses(res, user)
+      const product = await ProcuctService.addToCart(req, body , res)
+      responses(res, product)
     } catch (error) {
       responses(res, {
         httpCode: httpCode.INTERNAL_SERVER_ERROR,

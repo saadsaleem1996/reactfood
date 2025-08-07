@@ -13,12 +13,7 @@ module.exports = {
 
       if (!req.file) {
         return res.status(400).json({ message: "No file uploaded" });
-      }
-
-      console.log("req",req)
-
-      console.log(req.file , 'req.file') 
-      console.log("data in the file ", data)     
+      } 
 
       const product = await ProductModel.create({
         name: data.name,
@@ -28,14 +23,13 @@ module.exports = {
         imageUrl: req.file.path
       });
 
-      console.log("product is ---->", product);
 
       return {
         httpCode: httpCode.OK,
         data: {
           ...ProductSerializer.serialize(product),
           message: "Product added successfully",
-          // product,
+          
         },
       };
     } catch (error) {
@@ -47,7 +41,6 @@ module.exports = {
   },
   updateProduct: async (req, data, res) => {
     try {
-      console.log("data in the service", data);
       const updateProduct = await ProductModel.findByIdAndUpdate(
         {
           _id: data.id,
@@ -55,14 +48,11 @@ module.exports = {
         { $set: data }
       );
 
-      console.log("product is ---->", updateProduct);
-
       return {
         httpCode: httpCode.OK,
         data: {
           ...ProductSerializer.serialize(updateProduct),
           message: "Product updated successfully",
-          // product,
         },
       };
     } catch (error) {
@@ -74,18 +64,15 @@ module.exports = {
   },
   deleteProduct: async (req, data, res) => {
     try {
-      console.log("data in the service", data);
       const deleteProduct = await ProductModel.findByIdAndDelete({
         _id: data.id,
       });
-
-      console.log("product is ---->", deleteProduct);
 
       return {
         httpCode: httpCode.OK,
         data: {
           message: "Product deleted successfully",
-          // product,
+          
         },
       };
     } catch (error) {
@@ -99,14 +86,11 @@ module.exports = {
     try {
       const allProduct = await ProductModel.find({});
 
-      console.log("product is ---->", allProduct);
 
       return {
         httpCode: httpCode.OK,
         data: {
-          // message: "Product deleted successfully",
           ...ProductSerializer.serialize(allProduct),
-          // allProduct,
         },
       };
     } catch (error) {
@@ -119,28 +103,22 @@ module.exports = {
 
   addToCart: async (req, data, res) => {
     try {
-      console.log("data in the service", data);
 
-      // Find if a cart already exists for the user
       let cart = await CartModel.findOne({ userId: data.userId });
 
       if (!cart) {
-        // Create a new cart if none exists
         cart = await CartModel.create({
           userId: data.userId,
           products: [{ productId: data.productId, quantity: data.quantity }],
         });
       } else {
-        // Check if product already exists in the cart
         const productIndex = cart.products.findIndex(
           (p) => p.productId.toString() === data.productId
         );
 
         if (productIndex > -1) {
-          // If product exists, update the quantity
           cart.products[productIndex].quantity += data.quantity;
         } else {
-          // If not, push the new product
           cart.products.push({
             productId: data.productId,
             quantity: data.quantity,
@@ -149,8 +127,6 @@ module.exports = {
 
         await cart.save();
       }
-
-      console.log("cart is ---> ", cart);
 
       return {
         httpCode: httpCode.OK,

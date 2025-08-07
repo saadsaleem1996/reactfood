@@ -35,7 +35,7 @@ module.exports = {
           quantity,
           subtotal,
           productId: product._id,
-          image: product.image, // if available
+          image: product.image,
         };
       });
 
@@ -57,7 +57,6 @@ module.exports = {
   },
   updateOrder: async (req, data, res) => {
     try {
-      console.log("data in the service", data);
       const updateOrder = await OrderModel.findByIdAndUpdate(
         {
           _id: data.id,
@@ -68,14 +67,11 @@ module.exports = {
         { new: true }
       ).populate("products", "name , price");
 
-      console.log("Order is ---->", updateOrder);
 
       return {
         httpCode: httpCode.OK,
         data: {
-          //  ...OrderSerializer.serialize(updateOrder),
           message: "Product updated successfully",
-          // product,
         },
       };
     } catch (error) {
@@ -89,9 +85,7 @@ module.exports = {
   placeOrder: async (req, data, res) => {
   try {
     const userId = data.userId;
-    console.log("user ", userId);
 
-    // Check if cart is empty
     const cartItems = await CartModel.find({ userId });
 
     if (!cartItems || cartItems.length === 0) {
@@ -100,11 +94,6 @@ module.exports = {
         errors: [{ message: "Cart is empty. Please add products before placing an order." }],
       };
     }
-
-    // TODO: Create order logic here before clearing cart
-    // e.g., save items to OrderModel
-
-    // Clear the cart after placing order
     await CartModel.deleteMany({ userId });
 
     return {

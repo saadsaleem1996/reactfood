@@ -7,8 +7,8 @@ module.exports = {
   createOrders: async (req, res) => {
     try {
       const body = req.body
-      const user = await OrderService.createOrder(req, body , res)
-      responses(res, user)
+      const order = await OrderService.createOrder(req, body , res)
+      responses(res, order)
     } catch (error) {
       responses(res, {
         httpCode: httpCode.INTERNAL_SERVER_ERROR,
@@ -20,8 +20,8 @@ module.exports = {
   placeOrder: async (req, res) => {
     try {
       const body = req.body
-      const user = await OrderService.placeOrder(req, body , res)
-      responses(res, user)
+      const order = await OrderService.placeOrder(req, body , res)
+      responses(res, order)
     } catch (error) {
       responses(res, {
         httpCode: httpCode.INTERNAL_SERVER_ERROR,
@@ -33,8 +33,8 @@ module.exports = {
   updateOrders: async (req, res) => {
     try {
       const body = req.body
-      const user = await OrderService.updateOrder(req, body , res)
-      responses(res, user)
+      const order = await OrderService.updateOrder(req, body , res)
+      responses(res, order)
     } catch (error) {
       responses(res, {
         httpCode: httpCode.INTERNAL_SERVER_ERROR,

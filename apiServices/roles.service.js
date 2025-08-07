@@ -1,20 +1,20 @@
 "use strict";
-const CategoryModel = require("../models/category");
+const RolesModel = require("../models/roles");
 const httpCode = require("../utils/httpCodes");
 const ErrorSerializer = require("../serializer/error.serializer");
 
 module.exports = {
-  createCategory: async (req, data, res) => {
+  createRoles: async (req, data, res) => {
     try {
-      const category = await CategoryModel.create({
+      const role = await RolesModel.create({
         name: data.name,
       });
 
       return {
         httpCode: httpCode.OK,
         data: {
-          category,
-          message: "Category added successfully",
+          role,
+          message: "Role Created successfully",
         },
       };
     } catch (error) {
@@ -24,9 +24,9 @@ module.exports = {
       };
     }
   },
-  updateCategory: async (req, data, res) => {
+  updateRole: async (req, data, res) => {
     try {
-      const category = await CategoryModel.findByIdAndUpdate(
+      const role = await RolesModel.findByIdAndUpdate(
         {
           _id: data.id,
         },
@@ -36,7 +36,7 @@ module.exports = {
       return {
         httpCode: httpCode.OK,
         data: {
-          message: "Category updated successfully",
+          message: "Role updated successfully",
         },
       };
     } catch (error) {
@@ -46,16 +46,16 @@ module.exports = {
       };
     }
   },
-  deleteCategory: async (req, data, res) => {
+  deleteRole: async (req, data, res) => {
     try {
-      const category = await CategoryModel.findByIdAndDelete({
+      const role = await RolesModel.findByIdAndDelete({
         _id: data.id,
       });
 
       return {
         httpCode: httpCode.OK,
         data: {
-          message: "Category deleted successfully",
+          message: "Role deleted successfully",
         },
       };
     } catch (error) {
@@ -65,14 +65,14 @@ module.exports = {
       };
     }
   },
-  getAllCategories: async (req, data, res) => {
+  getAllRoles: async (req, data, res) => {
     try {
-      const allCategories = await CategoryModel.find({});
+      const allRoles = await CategoryModel.find({});
 
       return {
         httpCode: httpCode.OK,
         data: {
-          allCategories,
+          allRoles,
         },
       };
     } catch (error) {

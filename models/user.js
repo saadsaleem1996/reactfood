@@ -30,6 +30,10 @@ const userSchema = new Schema(
       type: String,
       required: false
     },
+    userRole: {
+      type: String,
+      required: false
+    },
     socialAccounts: [
       {
         platForm: { type: String, required: false },

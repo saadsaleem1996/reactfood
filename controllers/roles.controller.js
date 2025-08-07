@@ -1,14 +1,14 @@
 'use strict'
-const CategoryService = require('../apiServices/category.service')
+const RoleService = require('../apiServices/roles.service')
 const httpCode = require('../utils/httpCodes')
 const { responses } = require('../utils/response')
 
 module.exports = {
-  createCategory: async (req, res) => {
+  createRole: async (req, res) => {
     try {
       const body = req.body
-      const category = await CategoryService.createCategory(req, body , res)
-      responses(res, category)
+      const role = await RoleService.createRoles(req, body , res)
+      responses(res, role)
     } catch (error) {
       responses(res, {
         httpCode: httpCode.INTERNAL_SERVER_ERROR,
@@ -16,11 +16,11 @@ module.exports = {
       })
     }
   },
-  updateCategory: async (req, res) => {
+  updateRole: async (req, res) => {
     try {
       const body = req.body
-      const category = await CategoryService.updateCategory(req, body , res)
-      responses(res, category)
+      const role = await RoleService.updateRole(req, body , res)
+      responses(res, role)
     } catch (error) {
       responses(res, {
         httpCode: httpCode.INTERNAL_SERVER_ERROR,
@@ -28,11 +28,11 @@ module.exports = {
       })
     }
   },
-  deleteCategory: async (req, res) => {
+  deleteRole: async (req, res) => {
     try {
       const body = req.body
-      const category = await CategoryService.deleteCategory(req, body , res)
-      responses(res, category)
+      const role = await RoleService.deleteRole(req, body , res)
+      responses(res, role)
     } catch (error) {
       responses(res, {
         httpCode: httpCode.INTERNAL_SERVER_ERROR,
@@ -40,11 +40,11 @@ module.exports = {
       })
     }
   },
-  getAllCategories: async (req, res) => {
+  getAllRoles: async (req, res) => {
     try {
       const body = req.body
-      const category = await CategoryService.getAllCategories(req, body , res)
-      responses(res, category)
+      const role = await RoleService.getAllRoles(req, body , res)
+      responses(res, role)
     } catch (error) {
       responses(res, {
         httpCode: httpCode.INTERNAL_SERVER_ERROR,
