@@ -13,7 +13,7 @@ module.exports = {
       const userId = req?.token?._id;
       console.log("user id is ---- ", userId)
       const user = await UserModel.findById({
-        id: userId,
+        _id: userId,
       });
       console.log("user data ", user);
       return {

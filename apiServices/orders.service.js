@@ -7,7 +7,8 @@ const OrderSerializer = require("../serializer/order.serializer");
 module.exports = {
   createOrder: async (req, data, res) => {
     try {
-      const userId = data.userId;
+      const userId = req?.token?._id;
+      console.log("user id is ---- ", userId);
 
       const cart = await CartModel.findOne({ userId }).populate(
         "products.productId"
@@ -67,7 +68,6 @@ module.exports = {
         { new: true }
       ).populate("products", "name , price");
 
-
       return {
         httpCode: httpCode.OK,
         data: {
@@ -83,31 +83,37 @@ module.exports = {
   },
 
   placeOrder: async (req, data, res) => {
-  try {
-    const userId = data.userId;
+    try {
+      const userId = req?.token?._id;
+      console.log("user id is ---- ", userId);
 
-    const cartItems = await CartModel.find({ userId });
+      const cartItems = await CartModel.find({ userId });
 
-    if (!cartItems || cartItems.length === 0) {
+      if (!cartItems || cartItems.length === 0) {
+        return {
+          httpCode: httpCode.BAD_REQUEST,
+          errors: [
+            {
+              message:
+                "Cart is empty. Please add products before placing an order.",
+            },
+          ],
+        };
+      }
+      await CartModel.deleteMany({ userId });
+
       return {
-        httpCode: httpCode.BAD_REQUEST,
-        errors: [{ message: "Cart is empty. Please add products before placing an order." }],
+        httpCode: httpCode.OK,
+        data: {
+          message: "Order has been successfully placed.",
+        },
+      };
+    } catch (error) {
+      console.error("Error in placing order:", error);
+      return {
+        httpCode: httpCode.INTERNAL_SERVER_ERROR,
+        errors: [{ message: error.message }],
       };
     }
-    await CartModel.deleteMany({ userId });
-
-    return {
-      httpCode: httpCode.OK,
-      data: {
-        message: "Order has been successfully placed.",
-      },
-    };
-  } catch (error) {
-    console.error("Error in placing order:", error);
-    return {
-      httpCode: httpCode.INTERNAL_SERVER_ERROR,
-      errors: [{ message: error.message }],
-    };
-  }
-}
+  },
 };
