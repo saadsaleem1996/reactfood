@@ -33,7 +33,7 @@ module.exports = {
             const userRole = await UserRoleModel.findOne({
                 userId: user[0]._id,
                 roleId: user[0].userRole
-            }).select("roleId");
+            });
             
             const findRole = await RoleModel.findById({
                 _id: userRole.roleId
@@ -54,6 +54,7 @@ module.exports = {
                 httpCode: httpCode.OK,
                 data: {
                     ...LoginSerializer.serialize({
+                        _id: user[0]._id,
                         firstName: user[0].firstName,
                         lastName: user[0].lastName,
                         email: user[0].email,

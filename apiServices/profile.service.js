@@ -11,8 +11,9 @@ module.exports = {
   getProfile: async (req, data, res) => {
     try {
       const userId = req?.token?._id;
-      const user = await UserModel.findOne({
-        _id: userId,
+      console.log("user id is ---- ", userId)
+      const user = await UserModel.findById({
+        id: userId,
       });
       console.log("user data ", user);
       return {

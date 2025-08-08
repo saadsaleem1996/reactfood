@@ -31,7 +31,8 @@ const userSchema = new Schema(
       required: false,
     },
     userRole: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Roles",
       required: false,
     },
     socialAccounts: [

@@ -8,6 +8,7 @@ const app = express();
 const cors = require('cors');
 const path = require('path');
 const allRoutes = require('./routes/api/router.js');
+const seedSuperAdmin = require("./seedSuperAdmin.js");
 
 
 app.use(cors('*'));
@@ -17,29 +18,11 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // // API routes
 app.use(allRoutes);
-console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaa')
-// // Home route
-// app.get('/', async (req, res) => {
-//   generalResponse.successResponse(res, httpCodes.OK, {
-//     status: true,
-//     message: 'Welcome to React Food',
-//   });
-// });
 
 app.get('/welcome', async (req, res) => {
   res.json('this is welcome message')
 });
 
-// // Global error handler
-// app.use((err, req, res, next) => {
-//   console.error(err.stack);
-//   generalResponse.errorResponse(res, httpCodes.INTERNAL_SERVER_ERROR, {
-//     status: false,
-//     message: 'Something went wrong!',
-//   });
-// });
-
-// Starting the server
 const port = process.env.PORT || 5013;
 app.listen(port, () => {
   log(color.yellow(' ******************************************** '));
