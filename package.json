@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "NODE_ENV=dev nodemon  --trace-warnings --delay 50ms --inspect --max-old-space-size=8192 server.js",
+    "migrate:superadmin": "node migrations/createSuperAdmin.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

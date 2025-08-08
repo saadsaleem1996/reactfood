@@ -103,12 +103,14 @@ module.exports = {
 
   addToCart: async (req, data, res) => {
     try {
+      const userId = req?.token?._id;
+      console.log("user id is ---- ", userId);
 
-      let cart = await CartModel.findOne({ userId: data.userId });
+      let cart = await CartModel.findOne({ userId: userId });
 
       if (!cart) {
         cart = await CartModel.create({
-          userId: data.userId,
+          userId: userId,
           products: [{ productId: data.productId, quantity: data.quantity }],
         });
       } else {

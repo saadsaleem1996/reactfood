@@ -17,6 +17,19 @@ module.exports = {
       });
     }
   },
+  getAllProfile: async (req, res) => {
+    try {
+      const body = req.body;
+      const profile = await ProfileService.getAllProfile(req, body, res);
+
+      responses(res, profile);
+    } catch (error) {
+      responses(res, {
+        httpCode: httpCode.INTERNAL_SERVER_ERROR,
+        errors: [{ message: error.message }],
+      });
+    }
+  },
   updateProfile: async (req, res) => {
     try {
       const body = req.body;

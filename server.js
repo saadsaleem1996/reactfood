@@ -8,8 +8,6 @@ const app = express();
 const cors = require('cors');
 const path = require('path');
 const allRoutes = require('./routes/api/router.js');
-const seedSuperAdmin = require("./seedSuperAdmin.js");
-
 
 app.use(cors('*'));
 app.use(express.json());

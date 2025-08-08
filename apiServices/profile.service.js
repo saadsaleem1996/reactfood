@@ -122,4 +122,24 @@ module.exports = {
       };
     }
   },
+  getAllProfile: async (req, data, res) => {
+    try {
+      const userId = req?.token?._id;
+      console.log("user id is ---- ", userId)
+      const user = await UserModel.find({
+      });
+      console.log("user data ", user);
+      return {
+        httpCode: httpCode.OK,
+        data: {
+          ...LoginSerializer.serialize(user),
+        },
+      };
+    } catch (error) {
+      return {
+        httpCode: httpCode.INTERNAL_SERVER_ERROR,
+        errors: [{ message: error.message }],
+      };
+    }
+  },
 };

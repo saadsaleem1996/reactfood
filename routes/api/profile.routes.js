@@ -7,6 +7,8 @@ const PasswordValidator = require('../../validator/resetPassword.validator')
 
 router.get('/',TokenValidator, Controller.getProfile)
 
+router.get('/all',TokenValidator, Controller.getAllProfile)
+
 router.put('/',TokenValidator, Controller.updateProfile)
 
 router.delete('/',TokenValidator, Controller.deleteProfile)
