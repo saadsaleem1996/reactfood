@@ -2,11 +2,35 @@
 const RolesModel = require("../models/roles");
 const httpCode = require("../utils/httpCodes");
 const ErrorSerializer = require("../serializer/error.serializer");
-const RoleSerializer = require("../serializer/role.serializer")
+const RoleSerializer = require("../serializer/role.serializer");
+const userModel = require("../models/user");
 
 module.exports = {
   createRoles: async (req, data, res) => {
     try {
+      const id = req?.token?._id;
+      console.log("user log is ---->", id);
+      const findRole = await userModel
+        .findById({
+          _id: id,
+        })
+        .populate("userRole");
+      console.log("user user is ---->", findRole.userRole["role_name"]);
+      if (findRole.userRole["role_name"] !== "Super Admin") {
+        console.log("It's not admin", findRole.userRole["role_name"]);
+        return {
+          httpCode: httpCode.INTERNAL_SERVER_ERROR,
+          errors: [{ message: "Not Authorize for creating role" }],
+        };
+      }
+      const roleExists = await RolesModel.findOne({ role_name: data.name });
+    if (roleExists) {
+      return {
+          httpCode: httpCode.INTERNAL_SERVER_ERROR,
+          errors: [{ message: "Role Already exist" }],
+        };
+    }
+
       const role = await RolesModel.create({
         role_name: data.name,
       });
@@ -14,7 +38,7 @@ module.exports = {
       return {
         httpCode: httpCode.OK,
         data: {
-            ...RoleSerializer.serialize(role),
+          ...RoleSerializer.serialize(role),
           message: "Role Created successfully",
         },
       };
@@ -27,6 +51,22 @@ module.exports = {
   },
   updateRole: async (req, data, res) => {
     try {
+      const id = req?.token?._id;
+      console.log("user log is ---->", id);
+      const findRole = await userModel
+        .findById({
+          _id: id,
+        })
+        .populate("userRole");
+      console.log("user user is ---->", findRole.userRole["role_name"]);
+      if (findRole.userRole["role_name"] !== "Super Admin") {
+        console.log("It's not admin", findRole.userRole["role_name"]);
+        return {
+          httpCode: httpCode.INTERNAL_SERVER_ERROR,
+          errors: [{ message: "Not Authorize for updating role" }],
+        };
+      }
+
       const role = await RolesModel.findByIdAndUpdate(
         {
           _id: data.id,
@@ -49,6 +89,21 @@ module.exports = {
   },
   deleteRole: async (req, data, res) => {
     try {
+      const id = req?.token?._id;
+      console.log("user log is ---->", id);
+      const findRole = await userModel
+        .findById({
+          _id: id,
+        })
+        .populate("userRole");
+      console.log("user user is ---->", findRole.userRole["role_name"]);
+      if (findRole.userRole["role_name"] !== "Super Admin") {
+        console.log("It's not admin", findRole.userRole["role_name"]);
+        return {
+          httpCode: httpCode.INTERNAL_SERVER_ERROR,
+          errors: [{ message: "Not Authorize for delete role" }],
+        };
+      }
       const role = await RolesModel.findByIdAndDelete({
         _id: data.id,
       });
@@ -73,8 +128,7 @@ module.exports = {
       return {
         httpCode: httpCode.OK,
         data: {
-            ...RoleSerializer.serialize(allRoles),
-          
+          ...RoleSerializer.serialize(allRoles),
         },
       };
     } catch (error) {

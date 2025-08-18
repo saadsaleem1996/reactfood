@@ -47,6 +47,7 @@ module.exports = {
                     errors: [{ message: 'Incorrect Password' }],
                 };
             }
+            console.log("user info is ", user[0])
             const authToken = await JwtService.authToken(user[0]);
             await RedisService.create(user[0]?._id.toString(), authToken);
 
