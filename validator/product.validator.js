@@ -13,9 +13,8 @@ module.exports = {
     body("id", "Please enter Product id").not().isEmpty().isString(),
   ],
   validateCart: [
-    body("userId", "Please enter User id").not().isEmpty().isString(),
     body("productId", "Please enter Product id").not().isEmpty().isString(),
-    body("quantity", "Please enter Quantity").not().isEmpty().isString(),
+    body("quantity", "Please enter Quantity").not().isEmpty(),
   ],
   validate: async (req, res, next) => {
     const errors = validationResult(req);

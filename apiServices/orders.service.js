@@ -45,7 +45,7 @@ module.exports = {
         data: {
           products: productDetails,
           totalAmount,
-          message: "Order preview fetched successfully",
+          message: "Order created successfully",
         },
       };
     } catch (error) {
@@ -100,6 +100,10 @@ module.exports = {
           ],
         };
       }
+      const orderModel = await OrderModel.create({
+        cart: cartItems
+      })
+      console.log("cart added to order model ", orderModel)
       await CartModel.deleteMany({ userId });
 
       return {
