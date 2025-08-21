@@ -11,25 +11,43 @@ module.exports = {
   createProduct: async (req, data, res) => {
     try {
 
+      const id = req?.token?._id;
+            const findRole = await userModel
+              .findById({
+                _id: id,
+              })
+              .populate("userRole");
+            if (findRole.userRole["role_name"] !== "Super Admin") {
+              return {
+                httpCode: httpCode.INTERNAL_SERVER_ERROR,
+                errors: [{ message: "Not Authorize for creating role" }],
+              };
+            }
+
       if (!req.file) {
         return res.status(400).json({ message: "No file uploaded" });
-      } 
+      }
+      const productExists = await ProductModel.findOne({ name: data.name });
+      if (productExists) {
+        return {
+          httpCode: httpCode.INTERNAL_SERVER_ERROR,
+          errors: [{ message: "Product Already exist" }],
+        };
+      }
 
       const product = await ProductModel.create({
         name: data.name,
         price: data.price,
         description: data.description,
         categoryId: data.categoryId,
-        imageUrl: req.file.path
+        imageUrl: req.file.path,
       });
-
 
       return {
         httpCode: httpCode.OK,
         data: {
           ...ProductSerializer.serialize(product),
           message: "Product added successfully",
-          
         },
       };
     } catch (error) {
@@ -41,6 +59,18 @@ module.exports = {
   },
   updateProduct: async (req, data, res) => {
     try {
+      const id = req?.token?._id;
+            const findRole = await userModel
+              .findById({
+                _id: id,
+              })
+              .populate("userRole");
+            if (findRole.userRole["role_name"] !== "Super Admin") {
+              return {
+                httpCode: httpCode.INTERNAL_SERVER_ERROR,
+                errors: [{ message: "Not Authorize for creating role" }],
+              };
+            }
       const updateProduct = await ProductModel.findByIdAndUpdate(
         {
           _id: data.id,
@@ -64,6 +94,18 @@ module.exports = {
   },
   deleteProduct: async (req, data, res) => {
     try {
+      const id = req?.token?._id;
+            const findRole = await userModel
+              .findById({
+                _id: id,
+              })
+              .populate("userRole");
+            if (findRole.userRole["role_name"] !== "Super Admin") {
+              return {
+                httpCode: httpCode.INTERNAL_SERVER_ERROR,
+                errors: [{ message: "Not Authorize for creating role" }],
+              };
+            }
       const deleteProduct = await ProductModel.findByIdAndDelete({
         _id: data.id,
       });
@@ -72,7 +114,6 @@ module.exports = {
         httpCode: httpCode.OK,
         data: {
           message: "Product deleted successfully",
-          
         },
       };
     } catch (error) {
@@ -84,8 +125,19 @@ module.exports = {
   },
   getAllProduct: async (req, data, res) => {
     try {
+      const id = req?.token?._id;
+            const findRole = await userModel
+              .findById({
+                _id: id,
+              })
+              .populate("userRole");
+            if (findRole.userRole["role_name"] !== "Super Admin") {
+              return {
+                httpCode: httpCode.INTERNAL_SERVER_ERROR,
+                errors: [{ message: "Not Authorize for creating role" }],
+              };
+            }
       const allProduct = await ProductModel.find({});
-
 
       return {
         httpCode: httpCode.OK,
@@ -104,7 +156,6 @@ module.exports = {
   addToCart: async (req, data, res) => {
     try {
       const userId = req?.token?._id;
-      console.log("user id is ---- ", userId);
 
       let cart = await CartModel.findOne({ userId: userId });
 
@@ -138,7 +189,6 @@ module.exports = {
         },
       };
     } catch (error) {
-      console.error("Error adding to cart:", error);
       return {
         httpCode: httpCode.INTERNAL_SERVER_ERROR,
         errors: [{ message: error.message }],

@@ -11,11 +11,9 @@ module.exports = {
   getProfile: async (req, data, res) => {
     try {
       const userId = req?.token?._id;
-      console.log("user id is ---- ", userId)
       const user = await UserModel.findById({
         _id: userId,
       });
-      console.log("user data ", user);
       return {
         httpCode: httpCode.OK,
         data: {
@@ -58,16 +56,6 @@ module.exports = {
   deleteProfile: async (req, data, res) => {
     try {
       const userId = req?.token?._id;
-      if (!data.userId) {
-        return {
-          httpCode: httpCode.BAD_REQUEST,
-          ...ErrorSerializer.error(
-            httpCode.BAD_REQUEST,
-            req.originalUrl,
-            req.t("Please enter user id")
-          ),
-        };
-      }
       const deletedUser = await UserModel.findByIdAndDelete({
         _id: userId,
       });
@@ -125,10 +113,7 @@ module.exports = {
   getAllProfile: async (req, data, res) => {
     try {
       const userId = req?.token?._id;
-      console.log("user id is ---- ", userId)
-      const user = await UserModel.find({
-      });
-      console.log("user data ", user);
+      const user = await UserModel.find({});
       return {
         httpCode: httpCode.OK,
         data: {

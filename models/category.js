@@ -8,6 +8,10 @@ const categorySchema = new Schema(
             type: String,
             required: false
         },
+        imageUrl: {
+            type: String,
+            required: false
+        },
     },
     { timestamps: true, toJSON: { getters: true, virtuals: true } },
     { versionKey: false }

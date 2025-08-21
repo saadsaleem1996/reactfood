@@ -3,12 +3,12 @@ const OrderModel = require("../models/order");
 const CartModel = require("../models/cart");
 const httpCode = require("../utils/httpCodes");
 const OrderSerializer = require("../serializer/order.serializer");
+const ErrorSerializer = require("../serializer/error.serializer");
 
 module.exports = {
   createOrder: async (req, data, res) => {
     try {
       const userId = req?.token?._id;
-      console.log("user id is ---- ", userId);
 
       const cart = await CartModel.findOne({ userId }).populate(
         "products.productId"
@@ -49,7 +49,6 @@ module.exports = {
         },
       };
     } catch (error) {
-      console.error("Error in order preview:", error);
       return {
         httpCode: httpCode.INTERNAL_SERVER_ERROR,
         errors: [{ message: error.message }],
@@ -85,7 +84,6 @@ module.exports = {
   placeOrder: async (req, data, res) => {
     try {
       const userId = req?.token?._id;
-      console.log("user id is ---- ", userId);
 
       const cartItems = await CartModel.find({ userId });
 
@@ -100,11 +98,14 @@ module.exports = {
           ],
         };
       }
+      console.log("cart products are ---- ", cartItems);
+
       const orderModel = await OrderModel.create({
-        cart: cartItems
-      })
-      console.log("cart added to order model ", orderModel)
-      await CartModel.deleteMany({ userId });
+        userId: userId,
+        cart: cartItems.products,
+      });
+      await orderModel.save();
+      await CartModel.findOneAndDelete({ userId }).populate("cart");
 
       return {
         httpCode: httpCode.OK,
@@ -113,7 +114,42 @@ module.exports = {
         },
       };
     } catch (error) {
-      console.error("Error in placing order:", error);
+      return {
+        httpCode: httpCode.INTERNAL_SERVER_ERROR,
+        errors: [{ message: error.message }],
+      };
+    }
+  },
+
+  getOrderHistory: async (req, res) => {
+    try {
+      const userId = req?.token?._id;
+      console.log("user id is --- ", userId);
+
+      const orders = await OrderModel.find({ userId })
+        .populate("cart", "name,price") // populate product info if referenced
+        .sort({ createdAt: -1 }); // latest orders first
+
+      console.log("order history --- ", orders);
+      if (!orders || orders.length === 0) {
+        return {
+          httpCode: httpCode.BAD_REQUEST,
+          ...ErrorSerializer.error(
+            httpCode.BAD_REQUEST,
+            req.originalUrl,
+            "No order created"
+          ),
+        };
+      }
+
+      return {
+        httpCode: httpCode.OK,
+        data: {
+          message: "Order history fetched successfull",
+          orders,
+        },
+      };
+    } catch (error) {
       return {
         httpCode: httpCode.INTERNAL_SERVER_ERROR,
         errors: [{ message: error.message }],

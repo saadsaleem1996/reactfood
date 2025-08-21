@@ -2,12 +2,36 @@
 const CategoryModel = require("../models/category");
 const httpCode = require("../utils/httpCodes");
 const ErrorSerializer = require("../serializer/error.serializer");
+const UserModel = require("../models/user");
 
 module.exports = {
   createCategory: async (req, data, res) => {
     try {
+      const id = req?.token?._id;
+      const findRole = await UserModel
+        .findById({
+          _id: id,
+        })
+        .populate("userRole");
+      if (findRole.userRole["role_name"] !== "Super Admin") {
+        return {
+          httpCode: httpCode.INTERNAL_SERVER_ERROR,
+          errors: [{ message: "Not Authorize for creating role" }],
+        };
+      }
+      if (!req.file) {
+        return res.status(400).json({ message: "No file uploaded" });
+      }
+      const categoryExists = await CategoryModel.findOne({ name: data.name });
+      if (categoryExists) {
+        return {
+          httpCode: httpCode.INTERNAL_SERVER_ERROR,
+          errors: [{ message: "Category Already exist" }],
+        };
+      }
       const category = await CategoryModel.create({
         name: data.name,
+        imageUrl: req.file.path,
       });
 
       return {
@@ -26,6 +50,18 @@ module.exports = {
   },
   updateCategory: async (req, data, res) => {
     try {
+      const id = req?.token?._id;
+      const findRole = await UserModel
+        .findById({
+          _id: id,
+        })
+        .populate("userRole");
+      if (findRole.userRole["role_name"] !== "Super Admin") {
+        return {
+          httpCode: httpCode.INTERNAL_SERVER_ERROR,
+          errors: [{ message: "Not Authorize for creating role" }],
+        };
+      }
       const category = await CategoryModel.findByIdAndUpdate(
         {
           _id: data.id,
@@ -48,6 +84,18 @@ module.exports = {
   },
   deleteCategory: async (req, data, res) => {
     try {
+      const id = req?.token?._id;
+      const findRole = await UserModel
+        .findById({
+          _id: id,
+        })
+        .populate("userRole");
+      if (findRole.userRole["role_name"] !== "Super Admin") {
+        return {
+          httpCode: httpCode.INTERNAL_SERVER_ERROR,
+          errors: [{ message: "Not Authorize for creating role" }],
+        };
+      }
       const category = await CategoryModel.findByIdAndDelete({
         _id: data.id,
       });
@@ -67,6 +115,18 @@ module.exports = {
   },
   getAllCategories: async (req, data, res) => {
     try {
+      const id = req?.token?._id;
+      const findRole = await UserModel
+        .findById({
+          _id: id,
+        })
+        .populate("userRole");
+      if (findRole.userRole["role_name"] !== "Super Admin") {
+        return {
+          httpCode: httpCode.INTERNAL_SERVER_ERROR,
+          errors: [{ message: "Not Authorize for creating role" }],
+        };
+      }
       const allCategories = await CategoryModel.find({});
 
       return {

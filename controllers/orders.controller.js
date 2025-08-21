@@ -42,4 +42,17 @@ module.exports = {
       })
     }
   },
+
+  getAllOrders: async (req, res) => {
+    try {
+      const body = req.body
+      const order = await OrderService.getOrderHistory(req, body , res)
+      responses(res, order)
+    } catch (error) {
+      responses(res, {
+        httpCode: httpCode.INTERNAL_SERVER_ERROR,
+        errors: [{ message: error.message }]
+      })
+    }
+  },
 }

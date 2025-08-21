@@ -9,27 +9,24 @@ module.exports = {
   createRoles: async (req, data, res) => {
     try {
       const id = req?.token?._id;
-      console.log("user log is ---->", id);
       const findRole = await userModel
         .findById({
           _id: id,
         })
         .populate("userRole");
-      console.log("user user is ---->", findRole.userRole["role_name"]);
       if (findRole.userRole["role_name"] !== "Super Admin") {
-        console.log("It's not admin", findRole.userRole["role_name"]);
         return {
           httpCode: httpCode.INTERNAL_SERVER_ERROR,
           errors: [{ message: "Not Authorize for creating role" }],
         };
       }
       const roleExists = await RolesModel.findOne({ role_name: data.name });
-    if (roleExists) {
-      return {
+      if (roleExists) {
+        return {
           httpCode: httpCode.INTERNAL_SERVER_ERROR,
           errors: [{ message: "Role Already exist" }],
         };
-    }
+      }
 
       const role = await RolesModel.create({
         role_name: data.name,
@@ -52,15 +49,12 @@ module.exports = {
   updateRole: async (req, data, res) => {
     try {
       const id = req?.token?._id;
-      console.log("user log is ---->", id);
       const findRole = await userModel
         .findById({
           _id: id,
         })
         .populate("userRole");
-      console.log("user user is ---->", findRole.userRole["role_name"]);
       if (findRole.userRole["role_name"] !== "Super Admin") {
-        console.log("It's not admin", findRole.userRole["role_name"]);
         return {
           httpCode: httpCode.INTERNAL_SERVER_ERROR,
           errors: [{ message: "Not Authorize for updating role" }],
@@ -90,15 +84,12 @@ module.exports = {
   deleteRole: async (req, data, res) => {
     try {
       const id = req?.token?._id;
-      console.log("user log is ---->", id);
       const findRole = await userModel
         .findById({
           _id: id,
         })
         .populate("userRole");
-      console.log("user user is ---->", findRole.userRole["role_name"]);
       if (findRole.userRole["role_name"] !== "Super Admin") {
-        console.log("It's not admin", findRole.userRole["role_name"]);
         return {
           httpCode: httpCode.INTERNAL_SERVER_ERROR,
           errors: [{ message: "Not Authorize for delete role" }],
@@ -123,7 +114,22 @@ module.exports = {
   },
   getAllRoles: async (req, data, res) => {
     try {
-      const allRoles = await RolesModel.find({});
+      const id = req?.token?._id;
+      const findRole = await userModel
+        .findById({
+          _id: id,
+        })
+        .populate("userRole");
+      if (findRole.userRole["role_name"] !== "Super Admin") {
+        return {
+          httpCode: httpCode.INTERNAL_SERVER_ERROR,
+          errors: [{ message: "Not Authorize for creating role" }],
+        };
+      }
+
+      const allRoles = await RolesModel.find({
+        role_name: { $ne: "Super Admin" },
+      });
 
       return {
         httpCode: httpCode.OK,

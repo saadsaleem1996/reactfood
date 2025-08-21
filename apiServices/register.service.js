@@ -28,26 +28,18 @@ module.exports = {
       }
       data.password = await BcryptHelper.generate(data?.password);
       const getUsers = await UserModel.find();
-      console.log("users length", getUsers.length);
       let role
       if (getUsers.length == 0) {
-        console.log("no user found");
         role = await RoleMode.findOne({ role_name: "Super Admin" });
         if (!role) {
           role = await RoleMode.create({ role_name: "Super Admin" });
         }
       }else{
-        console.log("user found");
         role = await RoleMode.findOne({ role_name: "User" });
         if (!role) {
           role = await RoleMode.create({ role_name: "User" });
         }
       }
-      console.log("user role name is ---- ", role);
-    //   const userRole = await RoleMode.findOne({
-    //     role_name: role,
-    //   }).select("role_name");
-    //   console.log("user role is ---- ", userRole);
       if (!role) {
         return {
           httpCode: httpCode.BAD_REQUEST,
