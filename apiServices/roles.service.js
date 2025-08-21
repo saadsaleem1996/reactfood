@@ -8,6 +8,7 @@ const userModel = require("../models/user");
 module.exports = {
   createRoles: async (req, data, res) => {
     try {
+      console.log('---------->req:', req?.token);
       const id = req?.token?._id;
       const findRole = await userModel
         .findById({

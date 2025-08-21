@@ -8,7 +8,7 @@ router.post(
   TokenValidator,
   Controller.createRole
 );
-router.get("/", TokenValidator, Controller.getAllRoles);
+router.get("/", TokenValidator,  Controller.getAllRoles);
 router.put(
   "/",
   TokenValidator,

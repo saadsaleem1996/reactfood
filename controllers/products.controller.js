@@ -44,7 +44,7 @@ module.exports = {
     try {
       const body = req.body
       const product = await ProcuctService.getAllProduct(req, body , res)
-      responses(res, useproductr)
+      responses(res, product)
     } catch (error) {
       responses(res, {
         httpCode: httpCode.INTERNAL_SERVER_ERROR,

@@ -5,6 +5,7 @@ const httpCode = require("../utils/httpCodes");
 const ProductSerializer = require("../serializer/product.serializer");
 const CartSerializer = require("../serializer/cart.serializer");
 const cart = require("../models/cart");
+const userModel = require("../models/user");
 const ErrorSerializer = require("../serializer/error.serializer");
 
 module.exports = {
