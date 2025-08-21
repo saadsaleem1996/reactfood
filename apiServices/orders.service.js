@@ -39,6 +39,12 @@ module.exports = {
           image: product.image,
         };
       });
+      const addTotal = await CartModel.findOneAndUpdate(
+        { userId },
+        {
+          $set: { totalAmount: totalAmount},
+        }
+      );
 
       return {
         httpCode: httpCode.OK,
@@ -98,14 +104,15 @@ module.exports = {
           ],
         };
       }
-      console.log("cart products are ---- ", cartItems);
+      console.log("cart products are ---- ", cartItems[0].totalAmount);
 
       const orderModel = await OrderModel.create({
         userId: userId,
-        cart: cartItems.products,
+        products: cartItems[0].products,
+        total_price: cartItems[0].totalAmount
       });
       await orderModel.save();
-      await CartModel.findOneAndDelete({ userId }).populate("cart");
+      await CartModel.findOneAndDelete({ userId });
 
       return {
         httpCode: httpCode.OK,
@@ -127,8 +134,6 @@ module.exports = {
       console.log("user id is --- ", userId);
 
       const orders = await OrderModel.find({ userId })
-        .populate("cart", "name,price") // populate product info if referenced
-        .sort({ createdAt: -1 }); // latest orders first
 
       console.log("order history --- ", orders);
       if (!orders || orders.length === 0) {

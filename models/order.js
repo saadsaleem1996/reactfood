@@ -9,11 +9,19 @@ const OrderSchema = new Schema(
       ref: "User",
       required: true,
     },
-    cart: {
+    products: [
+        {
+          productId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Cart',
-            required: false
-        },
+            ref: 'Products',
+            required: true
+          },
+          quantity: {
+            type: Number,
+            default: 1
+          }
+        }
+      ],
     total_price: {
       type: String,
       required: false,
