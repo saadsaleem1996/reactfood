@@ -10,12 +10,12 @@ router.post(
 );
 router.get("/", TokenValidator,  Controller.getAllRoles);
 router.put(
-  "/",
+  "/:id",
   TokenValidator,
   Controller.updateRole
 );
 router.delete(
-  "/",
+  "/:id",
   TokenValidator,
   Controller.deleteRole
 );

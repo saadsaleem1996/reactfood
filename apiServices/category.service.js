@@ -62,9 +62,9 @@ module.exports = {
           errors: [{ message: "Not Authorize for creating role" }],
         };
       }
-      const category = await CategoryModel.findByIdAndUpdate(
+      await CategoryModel.findByIdAndUpdate(
         {
-          _id: data.id,
+          _id: req.params.id,
         },
         { $set: data }
       );
@@ -96,8 +96,8 @@ module.exports = {
           errors: [{ message: "Not Authorize for creating role" }],
         };
       }
-      const category = await CategoryModel.findByIdAndDelete({
-        _id: data.id,
+      await CategoryModel.findByIdAndDelete({
+        _id: req.params.id,
       });
 
       return {
@@ -115,18 +115,6 @@ module.exports = {
   },
   getAllCategories: async (req, data, res) => {
     try {
-      const id = req?.token?._id;
-      const findRole = await UserModel
-        .findById({
-          _id: id,
-        })
-        .populate("userRole");
-      if (findRole.userRole["role_name"] !== "Super Admin") {
-        return {
-          httpCode: httpCode.INTERNAL_SERVER_ERROR,
-          errors: [{ message: "Not Authorize for creating role" }],
-        };
-      }
       const allCategories = await CategoryModel.find({});
 
       return {

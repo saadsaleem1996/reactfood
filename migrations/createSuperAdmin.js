@@ -13,12 +13,10 @@ async function runMigration() {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log("📦 Connected to MongoDB");
 
     // Check if Super Admin already exists
     const existingSuperAdmin = await UserModel.findOne({ email: "superadmin@example.com" });
     if (existingSuperAdmin) {
-      console.log("✅ Super Admin already exists. Migration skipped.");
       process.exit(0);
     }
 
@@ -26,7 +24,7 @@ async function runMigration() {
     let superAdminRole = await RoleModel.findOne({ role_name: "Super Admin" });
     if (!superAdminRole) {
       superAdminRole = await RoleModel.create({ role_name: "Super Admin" });
-      console.log("🛠 Created Super Admin role");
+     
     }
 
     // Create Super Admin user
@@ -44,7 +42,6 @@ async function runMigration() {
             userId: user._id,
             roleId: superAdminRole._id,
           });
-    console.log("🎉 Super Admin created successfully");
     process.exit(0);
   } catch (error) {
     console.error("❌ Migration failed:", error);

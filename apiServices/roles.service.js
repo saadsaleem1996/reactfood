@@ -8,7 +8,6 @@ const userModel = require("../models/user");
 module.exports = {
   createRoles: async (req, data, res) => {
     try {
-      console.log('---------->req:', req?.token);
       const id = req?.token?._id;
       const findRole = await userModel
         .findById({
@@ -62,9 +61,9 @@ module.exports = {
         };
       }
 
-      const role = await RolesModel.findByIdAndUpdate(
+      await RolesModel.findByIdAndUpdate(
         {
-          _id: data.id,
+          _id: req.params.id,
         },
         { $set: data }
       );
@@ -96,8 +95,8 @@ module.exports = {
           errors: [{ message: "Not Authorize for delete role" }],
         };
       }
-      const role = await RolesModel.findByIdAndDelete({
-        _id: data.id,
+      await RolesModel.findByIdAndDelete({
+        _id: req.params.id,
       });
 
       return {

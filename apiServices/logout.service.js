@@ -7,11 +7,10 @@ module.exports = {
     logout: async (req, res) => {
         try {
             const userId = req?.token?._id
-            console.log('userId',userId)
+            ('userId',userId)
             const user = await UserModel.findOne({
              _id:userId,
             });
-            console.log('userId',user)
             await RedisService.delete(user?._id.toString())
             return {
                 httpCode: httpCode.OK,

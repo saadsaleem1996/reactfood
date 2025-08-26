@@ -104,8 +104,7 @@ module.exports = {
           ],
         };
       }
-      console.log("cart products are ---- ", cartItems[0].totalAmount);
-
+      
       const orderModel = await OrderModel.create({
         userId: userId,
         products: cartItems[0].products,
@@ -131,11 +130,9 @@ module.exports = {
   getOrderHistory: async (req, res) => {
     try {
       const userId = req?.token?._id;
-      console.log("user id is --- ", userId);
 
       const orders = await OrderModel.find({ userId })
 
-      console.log("order history --- ", orders);
       if (!orders || orders.length === 0) {
         return {
           httpCode: httpCode.BAD_REQUEST,
