@@ -71,11 +71,20 @@ module.exports = {
           errors: [{ message: "Not Authorize for creating role" }],
         };
       }
+
+      let updateData = { ...data };
+
+      // Only update image if new file uploaded
+      if (req.file) {
+        updateData.imageUrl = req.file.path; // or req.file.path depending on your multer config
+        console.log("uploaded file is ---- ",updateData.imageUrl )
+      }
       const updateProduct = await ProductModel.findByIdAndUpdate(
         {
-          _id: data.id,
+          _id: req.params.id,
         },
-        { $set: data }
+        { $set: updateData },
+        { new: true }
       );
 
       return {
@@ -106,8 +115,8 @@ module.exports = {
           errors: [{ message: "Not Authorize for creating role" }],
         };
       }
-      const deleteProduct = await ProductModel.findByIdAndDelete({
-        _id: data.id,
+      await ProductModel.findByIdAndDelete({
+        _id: req.params.id,
       });
 
       return {

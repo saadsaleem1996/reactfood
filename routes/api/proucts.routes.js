@@ -22,15 +22,14 @@ router.post(
   Controller.addTocard
 );
 router.put(
-  "/",
-  productValidator.validateProductId,
+  "/:id",
   productValidator.validate,
+  upload.single("image"),
   TokenValidator,
   Controller.updateProduct
 );
 router.delete(
   "/",
-  productValidator.validateProductId,
   productValidator.validate,
   TokenValidator,
   Controller.deleteProduct

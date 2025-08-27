@@ -11,7 +11,7 @@ router.post(
   Controller.createCategory
 );
 router.get("/", TokenValidator, Controller.getAllCategories);
-router.put("/:id", TokenValidator, Controller.updateCategory);
+router.put("/:id", upload.single("image"), TokenValidator, Controller.updateCategory);
 router.delete("/:id", TokenValidator, Controller.deleteCategory);
 
 module.exports = router;

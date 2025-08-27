@@ -8,11 +8,9 @@ module.exports = {
   createCategory: async (req, data, res) => {
     try {
       const id = req?.token?._id;
-      const findRole = await UserModel
-        .findById({
-          _id: id,
-        })
-        .populate("userRole");
+      const findRole = await UserModel.findById({
+        _id: id,
+      }).populate("userRole");
       if (findRole.userRole["role_name"] !== "Super Admin") {
         return {
           httpCode: httpCode.INTERNAL_SERVER_ERROR,
@@ -51,27 +49,33 @@ module.exports = {
   updateCategory: async (req, data, res) => {
     try {
       const id = req?.token?._id;
-      const findRole = await UserModel
-        .findById({
-          _id: id,
-        })
-        .populate("userRole");
+      const findRole = await UserModel.findById({
+        _id: id,
+      }).populate("userRole");
       if (findRole.userRole["role_name"] !== "Super Admin") {
         return {
           httpCode: httpCode.INTERNAL_SERVER_ERROR,
           errors: [{ message: "Not Authorize for creating role" }],
         };
       }
-      await CategoryModel.findByIdAndUpdate(
+      if (req.file) {
+        data.imageUrl = `/uploads/${req.file.filename}`;
+      } else {
+        // Remove image key if no new image uploaded
+        delete data.imageUrl;
+      }
+      const updatedCategory = await CategoryModel.findByIdAndUpdate(
         {
           _id: req.params.id,
         },
-        { $set: data }
+        { $set: data },
+        { new: true }
       );
 
       return {
         httpCode: httpCode.OK,
         data: {
+          updatedCategory,
           message: "Category updated successfully",
         },
       };
@@ -85,11 +89,9 @@ module.exports = {
   deleteCategory: async (req, data, res) => {
     try {
       const id = req?.token?._id;
-      const findRole = await UserModel
-        .findById({
-          _id: id,
-        })
-        .populate("userRole");
+      const findRole = await UserModel.findById({
+        _id: id,
+      }).populate("userRole");
       if (findRole.userRole["role_name"] !== "Super Admin") {
         return {
           httpCode: httpCode.INTERNAL_SERVER_ERROR,
