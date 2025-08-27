@@ -59,7 +59,7 @@ module.exports = {
         };
       }
       if (req.file) {
-        data.imageUrl = `/uploads/${req.file.filename}`;
+        data.imageUrl = `uploads/${req.file.filename}`;
       } else {
         // Remove image key if no new image uploaded
         delete data.imageUrl;
